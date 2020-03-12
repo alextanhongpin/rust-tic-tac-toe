@@ -2,6 +2,8 @@
 Minimax with alpha-beta pruning, tic tac toe implementation in rust
 
 
+## Start
+
 ```bash
 $ cargo run
 Make a move, X!
@@ -16,4 +18,10 @@ Make a move, X!
 "o|x|-"
 "-|x|-"
 "-|o|-"
+```
+
+## Test
+
+```bash
+$ cargo test -- --nocapture
 ```
