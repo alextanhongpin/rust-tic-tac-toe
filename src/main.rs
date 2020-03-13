@@ -47,10 +47,6 @@ impl TicTacToe {
         None
     }
 
-    fn make_clone(&self) -> TicTacToe {
-        TicTacToe(self.0.clone())
-    }
-
     fn minimax(
         &self,
         depth: i8,
@@ -75,9 +71,9 @@ impl TicTacToe {
                 if cell != None {
                     continue;
                 }
-                let mut ttt_clone = self.make_clone();
-                ttt_clone.make_move(i, Some(Cell::X));
-                let (_, score) = ttt_clone.minimax(depth + 1, !maximizing_player, alpha, beta);
+                let mut ttt = self.clone();
+                ttt.make_move(i, Some(Cell::X));
+                let (_, score) = ttt.minimax(depth + 1, !maximizing_player, alpha, beta);
                 if score > best_score {
                     best_score = score;
                     if best_score > alpha {
@@ -97,10 +93,9 @@ impl TicTacToe {
                 if cell != None {
                     continue;
                 }
-                let mut ttt_clone = self.make_clone();
-                ttt_clone.make_move(i, Some(Cell::O));
-                let (_b_move, score) =
-                    ttt_clone.minimax(depth + 1, !maximizing_player, alpha, beta);
+                let mut ttt = self.clone();
+                ttt.make_move(i, Some(Cell::O));
+                let (_b_move, score) = ttt.minimax(depth + 1, !maximizing_player, alpha, beta);
                 if score < best_score {
                     best_score = score;
                     if best_score < beta {
