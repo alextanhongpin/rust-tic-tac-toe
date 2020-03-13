@@ -1,8 +1,16 @@
+use std::fmt;
 use std::io;
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum Cell {
     X,
     O,
+}
+
+impl fmt::Display for Cell {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -117,8 +125,7 @@ fn main() {
     let mut round = 0;
     loop {
         let (msg, end_game) = match ttt.check_win() {
-            Some(Cell::X) => ("X wins!".to_string(), true),
-            Some(Cell::O) => ("O wins!".to_string(), true),
+            Some(cell) => (format!("{:?} wins!", cell), true),
             _ => match round {
                 0..=8 => ("Make a move, X!".to_string(), false),
                 _ => ("Game ends in draw!".to_string(), true),
@@ -140,10 +147,7 @@ fn main() {
             .parse()
             .expect("Please type in a valid move!");
 
-        let valid_move = match player_move {
-            0..=8 => true,
-            _ => false,
-        };
+        let valid_move = matches!(player_move, 0..=8);
         if !valid_move {
             println!("Move must be in between 0 and 8");
             continue;
@@ -168,10 +172,7 @@ fn main() {
             let row = row
                 .iter()
                 .map(|cell| match cell {
-                    Some(value) => match value {
-                        Cell::X => "x".to_string(),
-                        Cell::O => "o".to_string(),
-                    },
+                    Some(value) => value.to_string(),
                     None => "-".to_string(),
                 })
                 .collect::<Vec<String>>()
