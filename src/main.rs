@@ -19,7 +19,7 @@ struct TicTacToe([Option<Cell>; 9]);
 type Move = i8;
 type Score = i8;
 
-static COMBINATIONS: &'static [&'static [usize]] = &[
+static COMBINATIONS: &[&[usize]] = &[
     &[0, 1, 2],
     &[3, 4, 5],
     &[6, 7, 8],
@@ -65,7 +65,7 @@ impl TicTacToe {
         match self.check_win() {
             Some(Cell::X) => return (-1, 10 - depth),
             Some(Cell::O) => return (-1, -10 + depth),
-            _ => {
+            None => {
                 if depth == 9 {
                     return (-1, -1);
                 }
@@ -126,7 +126,7 @@ fn main() {
     loop {
         let (msg, end_game) = match ttt.check_win() {
             Some(cell) => (format!("{:?} wins!", cell), true),
-            _ => match round {
+            None => match round {
                 0..=8 => ("Make a move, X!".to_string(), false),
                 _ => ("Game ends in draw!".to_string(), true),
             },
@@ -172,7 +172,7 @@ fn main() {
             let row = row
                 .iter()
                 .map(|cell| match cell {
-                    Some(value) => value.to_string(),
+                    Some(v) => v.to_string(),
                     None => "-".to_string(),
                 })
                 .collect::<Vec<String>>()
